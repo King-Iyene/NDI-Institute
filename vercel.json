@@ -3,6 +3,11 @@
   "buildCommand": "pnpm run build:frontend",
   "outputDirectory": "artifacts/ndi-digital-institute/dist/public",
   "framework": null,
+  "functions": {
+    "api/index.mjs": {
+      "includeFiles": "artifacts/api-server/dist/**"
+    }
+  },
   "rewrites": [
     { "source": "/api/(.*)", "destination": "/api" },
     { "source": "/((?!api/).*)", "destination": "/index.html" }
