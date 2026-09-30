@@ -419,9 +419,151 @@ th { font:600 .75rem var(--app-font-sans); text-transform:uppercase; letter-spac
 .page-hero.img-section > .wrap { position: relative; z-index: 2; }
 .page-hero.img-section, .page-hero.img-section h1, .page-hero.img-section p, .page-hero.img-section .lede { color: #fff; }
 
-/* ── Animation ── */
+/* ── Animations ── */
 .fade-in { animation:fade-in .5s ease both; }
 @keyframes fade-in { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:none; } }
+
+/* Scroll-triggered reveal */
+.reveal { opacity:0; transform:translateY(40px); transition: opacity .7s cubic-bezier(.22,1,.36,1), transform .7s cubic-bezier(.22,1,.36,1); }
+.reveal.visible { opacity:1; transform:none; }
+.reveal-left { opacity:0; transform:translateX(-50px); transition: opacity .7s cubic-bezier(.22,1,.36,1), transform .7s cubic-bezier(.22,1,.36,1); }
+.reveal-left.visible { opacity:1; transform:none; }
+.reveal-right { opacity:0; transform:translateX(50px); transition: opacity .7s cubic-bezier(.22,1,.36,1), transform .7s cubic-bezier(.22,1,.36,1); }
+.reveal-right.visible { opacity:1; transform:none; }
+.reveal-scale { opacity:0; transform:scale(.88); transition: opacity .6s cubic-bezier(.22,1,.36,1), transform .6s cubic-bezier(.22,1,.36,1); }
+.reveal-scale.visible { opacity:1; transform:none; }
+
+/* Stagger children */
+.stagger > *:nth-child(1) { transition-delay: .05s; }
+.stagger > *:nth-child(2) { transition-delay: .15s; }
+.stagger > *:nth-child(3) { transition-delay: .25s; }
+.stagger > *:nth-child(4) { transition-delay: .35s; }
+.stagger > *:nth-child(5) { transition-delay: .45s; }
+.stagger > *:nth-child(6) { transition-delay: .55s; }
+
+/* Hero entrance */
+.hero-enter h1 { animation: hero-slide-up .9s cubic-bezier(.22,1,.36,1) .15s both; }
+.hero-enter .lede { animation: hero-slide-up .9s cubic-bezier(.22,1,.36,1) .35s both; }
+.hero-enter .actions { animation: hero-slide-up .9s cubic-bezier(.22,1,.36,1) .5s both; }
+@keyframes hero-slide-up { from { opacity:0; transform:translateY(35px); } to { opacity:1; transform:none; } }
+
+/* Stats counter pop */
+.stat-pop { animation: stat-pop .6s cubic-bezier(.22,1,.36,1) both; }
+@keyframes stat-pop { from { opacity:0; transform:scale(.5) translateY(20px); } 60% { transform:scale(1.08) translateY(-3px); } to { opacity:1; transform:none; } }
+
+/* Card hover enhancements */
+.program-card.img-card { transition: transform .4s cubic-bezier(.22,1,.36,1), box-shadow .4s ease; }
+.program-card.img-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 20px 50px rgba(0,0,0,.25);
+}
+.program-card.img-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, hsla(163,63%,24%,.0) 0%, hsla(163,63%,24%,.15) 100%);
+  opacity: 0;
+  transition: opacity .4s ease;
+  z-index: 1;
+}
+.program-card.img-card:hover::after { opacity: 1; }
+.program-card.img-card .arrow-link { transition: gap .3s ease, color .3s ease; }
+.program-card.img-card:hover .arrow-link { gap: .7rem; color: hsl(var(--accent)); }
+
+/* Button pulse on hero */
+.btn-pulse { position: relative; overflow: hidden; }
+.btn-pulse::after {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--accent)));
+  opacity: 0;
+  z-index: -1;
+  animation: btn-glow 2.5s ease-in-out infinite;
+}
+@keyframes btn-glow { 0%, 100% { opacity: 0; transform: scale(1); } 50% { opacity: .35; transform: scale(1.06); } }
+
+/* Contact tile hover */
+.contact-tile { transition: transform .35s cubic-bezier(.22,1,.36,1), box-shadow .35s ease, border-color .35s ease; }
+.contact-tile:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); border-color: hsl(var(--primary)); }
+
+/* Stats row shimmer on load */
+.stats-row .stat strong { display: block; font: 800 clamp(2rem, 4.5vw, 3.2rem) var(--app-font-sans); color: hsl(var(--accent)); }
+
+/* Steps animation */
+.steps li { transition: opacity .5s ease, transform .5s ease; }
+
+/* Notice slide */
+.notice { transition: transform .35s ease, box-shadow .35s ease; }
+.notice:hover { transform: translateX(4px); box-shadow: var(--shadow-md); }
+
+/* Blockbar segments */
+.blockbar > div { transition: flex .5s cubic-bezier(.22,1,.36,1), padding .3s ease; }
+.blockbar:hover > div { padding: 1.2rem .9rem; }
+
+/* Floating accent dot */
+.hero::after {
+  content: '';
+  position: absolute;
+  width: 18vw;
+  height: 18vw;
+  max-width: 260px;
+  max-height: 260px;
+  left: -6vw;
+  bottom: 10%;
+  background: radial-gradient(circle, hsla(20,80%,50%,.12) 0%, transparent 70%);
+  border-radius: 50%;
+  animation: float 8s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes float { 0%, 100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-25px) scale(1.08); } }
+
+/* Section heading underline accent */
+.section-head h2 { position: relative; display: inline-block; }
+.section-head h2::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -.18em;
+  width: 0;
+  height: 4px;
+  background: linear-gradient(90deg, hsl(var(--primary)), hsl(var(--accent)));
+  border-radius: 2px;
+  transition: width .6s cubic-bezier(.22,1,.36,1);
+}
+.section-head h2.visible::after,
+.visible .section-head h2::after,
+.reveal.visible h2::after { width: 60px; }
+
+/* Smooth scroll indicator */
+.scroll-hint {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 3;
+  animation: bounce-down 2s ease-in-out infinite;
+  color: rgba(255,255,255,.7);
+}
+@keyframes bounce-down { 0%, 100% { transform: translateX(-50%) translateY(0); opacity: .7; } 50% { transform: translateX(-50%) translateY(10px); opacity: 1; } }
+
+/* Gradient text for accent words */
+.gradient-text {
+  background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--accent)) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Image card shimmer overlay */
+.program-card.img-card::before {
+  transition: background .5s ease;
+}
+.program-card.img-card:hover::before {
+  background: linear-gradient(180deg, transparent 10%, hsla(200, 38%, 10%, .92) 75%);
+}
 
 /* ── Responsive ── */
 @media (max-width: 980px) {

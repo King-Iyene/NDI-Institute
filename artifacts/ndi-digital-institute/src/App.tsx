@@ -1,10 +1,10 @@
-import { useEffect, useState, type FormEvent } from 'react';
+import { useEffect, useRef, useState, useCallback, type FormEvent } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ErrorBoundary } from '@/components/error-boundary';
 import { Toaster } from '@/components/ui/toaster';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import {
-  ArrowRight, CheckCircle2, ChevronRight, Code2, Database,
+  ArrowRight, CheckCircle2, ChevronDown, ChevronRight, Code2, Database,
   ExternalLink, Menu, MessageCircle, PenTool, Phone, X,
 } from 'lucide-react';
 import {
@@ -16,6 +16,47 @@ import ndiFooterLogo from '@assets/6a7c377c1fd638d364c21328_1788802293520.png';
 
 const queryClient = new QueryClient();
 const contactEmail = 'info@nigerdeltainnovate.org';
+
+function useReveal() {
+  const ref = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      (entries) => { entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } }); },
+      { threshold: 0.12, rootMargin: '0px 0px -40px 0px' }
+    );
+    el.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale').forEach((c) => obs.observe(c));
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
+  return ref;
+}
+
+function useCountUp(end: number, duration = 1200) {
+  const [val, setVal] = useState(0);
+  const [started, setStarted] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) { setStarted(true); obs.disconnect(); } }, { threshold: 0.5 });
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
+  useEffect(() => {
+    if (!started) return;
+    const start = performance.now();
+    function tick(now: number) {
+      const p = Math.min((now - start) / duration, 1);
+      const eased = 1 - Math.pow(1 - p, 3);
+      setVal(Math.round(eased * end));
+      if (p < 1) requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  }, [started, end, duration]);
+  return { ref, val };
+}
 
 const IMG = {
   hero: 'https://images.unsplash.com/photo-1531482615713-2afd69097998?w=1920&q=80',
@@ -89,7 +130,7 @@ function PageFrame({ children }: { children: React.ReactNode }) {
 }
 
 function PageHero({ title, children, image }: { title: string; children: React.ReactNode; image?: string }) {
-  return <section className={`page-hero${image ? ' img-section' : ''}`} style={image ? { backgroundImage: `url(${image})` } : undefined}>
+  return <section className={`page-hero hero-enter${image ? ' img-section' : ''}`} style={image ? { backgroundImage: `url(${image})` } : undefined}>
     {image && <div className="overlay" />}
     <div className="wrap" style={{ position: 'relative', zIndex: 2 }}>
       <h1>{title}</h1>
@@ -98,32 +139,42 @@ function PageHero({ title, children, image }: { title: string; children: React.R
   </section>;
 }
 
+function CountStat({ end, label }: { end: number; label: string }) {
+  const { ref, val } = useCountUp(end);
+  return <div className="stat" ref={ref}><strong>{val}</strong><span>{label}</span></div>;
+}
+
 function HomePage() {
+  const careersRef = useReveal();
+  const creditsRef = useReveal();
+  const blendedRef = useReveal();
+  const awardRef = useReveal();
   return <PageFrame>
-    <section className="hero hero-img" style={{ backgroundImage: `url(${IMG.hero})` }}>
+    <section className="hero hero-img hero-enter" style={{ backgroundImage: `url(${IMG.hero})` }}>
       <div className="overlay" />
       <div className="wrap hero-content" style={{ position: 'relative', zIndex: 2 }}>
         <h1>Learn a digital trade <em>well enough to be paid for it.</em></h1>
         <p className="lede">24-week practical certificates in Port Harcourt. No prior experience needed.</p>
         <div className="actions">
-          <Link href="/admissions#apply" className="btn" data-testid="button-hero-apply">Register interest <ArrowRight size={16} /></Link>
+          <Link href="/admissions#apply" className="btn btn-pulse" data-testid="button-hero-apply">Register interest <ArrowRight size={16} /></Link>
           <Link href="/programmes" className="btn btn-secondary" data-testid="button-hero-programmes">Explore programmes</Link>
         </div>
       </div>
+      <div className="scroll-hint"><ChevronDown size={28} /></div>
     </section>
 
     <section className="section"><div className="wrap">
       <div className="stats-row">
-        <div className="stat"><strong>24</strong><span>weeks</span></div>
-        <div className="stat"><strong>30</strong><span>credit units</span></div>
-        <div className="stat"><strong>3</strong><span>programmes</span></div>
-        <div className="stat"><strong>4</strong><span>study modes</span></div>
+        <CountStat end={24} label="weeks" />
+        <CountStat end={30} label="credit units" />
+        <CountStat end={3} label="programmes" />
+        <CountStat end={4} label="study modes" />
       </div>
     </div></section>
 
-    <section className="section tinted"><div className="wrap">
-      <div className="section-head narrow"><h2>Three practical digital careers.</h2><p>Each programme opens with an appointed instructor, approved specification and confirmed equipment.</p></div>
-      <div className="grid-3">{programmes.map((p) => <Link href={`/programmes#${p.id}`} className="program-card img-card" key={p.id} data-testid={`card-programme-${p.id}`} style={{ backgroundImage: `url(${p.image})` }}>
+    <section className="section tinted" ref={careersRef}><div className="wrap">
+      <div className="section-head narrow reveal"><h2>Three practical digital careers.</h2><p>Each programme opens with an appointed instructor, approved specification and confirmed equipment.</p></div>
+      <div className="grid-3 stagger">{programmes.map((p, i) => <Link href={`/programmes#${p.id}`} className="program-card img-card reveal-scale" key={p.id} data-testid={`card-programme-${p.id}`} style={{ backgroundImage: `url(${p.image})` }}>
         <div className="overlay" />
         <div style={{ position: 'relative', zIndex: 2 }}>
           <h3>{p.title}</h3>
@@ -133,11 +184,11 @@ function HomePage() {
       </Link>)}</div>
     </div></section>
 
-    <section className="section"><div className="wrap"><div className="section-head"><h2>Thirty credit units. One project you defend.</h2><p>One credit unit is thirty notional learner hours. Your 900 hours move from shared foundations to specialist practice, then into a capstone built for a real brief.</p></div><div className="blockbar" role="img" aria-label="Certificate structure: Digital Core 6 units, Family Core 8 units, Specialist block 12 units, Capstone 4 units"><div className="b1"><b>Digital Core</b><span>6 units</span></div><div className="b2"><b>Family Core</b><span>8 units</span></div><div className="b3"><b>Specialist block</b><span>12 units</span></div><div className="b4"><b>Capstone</b><span>4 units</span></div></div><div className="grid-2" style={{ marginTop: '2.5rem' }}><div><h3>Shared foundations</h3><p>Everyone takes computing environments, professional practice for technical work, and online safety and data protection under the Nigeria Data Protection Act 2023.</p></div><div><h3>A capstone with nowhere to hide</h3><p>A partner brief or community need becomes your deadline. You produce the work and defend it in person before two assessors.</p></div></div></div></section>
+    <section className="section" ref={creditsRef}><div className="wrap"><div className="section-head reveal"><h2>Thirty credit units. One project you defend.</h2><p>One credit unit is thirty notional learner hours. Your 900 hours move from shared foundations to specialist practice, then into a capstone built for a real brief.</p></div><div className="blockbar reveal" role="img" aria-label="Certificate structure: Digital Core 6 units, Family Core 8 units, Specialist block 12 units, Capstone 4 units"><div className="b1"><b>Digital Core</b><span>6 units</span></div><div className="b2"><b>Family Core</b><span>8 units</span></div><div className="b3"><b>Specialist block</b><span>12 units</span></div><div className="b4"><b>Capstone</b><span>4 units</span></div></div><div className="grid-2 stagger" style={{ marginTop: '2.5rem' }}><div className="reveal-left"><h3>Shared foundations</h3><p>Everyone takes computing environments, professional practice for technical work, and online safety and data protection under the Nigeria Data Protection Act 2023.</p></div><div className="reveal-right"><h3>A capstone with nowhere to hide</h3><p>A partner brief or community need becomes your deadline. You produce the work and defend it in person before two assessors.</p></div></div></div></section>
 
-    <section className="section dark-section hero-img" style={{ backgroundImage: `url(${IMG.study})` }}><div className="overlay" /><div className="wrap split-feature" style={{ position: 'relative', zIndex: 2 }}><div><div className="feature-number">40<span style={{ fontSize: '2rem' }}>%</span></div><h2>Blended, not remote.</h2><p>Forty per cent online in your own time, forty per cent live teaching and twenty per cent on-site practical work.</p></div><div><ul className="rule-list"><li><strong>Real workshops</strong><span>Robotics and hardware taught at RAIL, the Robotics and AI Laboratory at Okrika Grammar School.</span></li><li><strong>Four study modes</strong><span>Full-time blended, evening and weekend, hub cohort, or distance with residency blocks.</span></li><li><strong>Access by design</strong><span>You do not need to own a laptop. Device access is part of our access plan.</span></li></ul><p style={{ marginTop: '2rem' }}><Link href="/admissions" className="btn btn-light">See admissions and fees <ArrowRight size={16} /></Link></p></div></div></section>
+    <section className="section dark-section hero-img" style={{ backgroundImage: `url(${IMG.study})` }} ref={blendedRef}><div className="overlay" /><div className="wrap split-feature" style={{ position: 'relative', zIndex: 2 }}><div className="reveal-left"><div className="feature-number">40<span style={{ fontSize: '2rem' }}>%</span></div><h2>Blended, not remote.</h2><p>Forty per cent online in your own time, forty per cent live teaching and twenty per cent on-site practical work.</p></div><div className="reveal-right"><ul className="rule-list"><li><strong>Real workshops</strong><span>Robotics and hardware taught at RAIL, the Robotics and AI Laboratory at Okrika Grammar School.</span></li><li><strong>Four study modes</strong><span>Full-time blended, evening and weekend, hub cohort, or distance with residency blocks.</span></li><li><strong>Access by design</strong><span>You do not need to own a laptop. Device access is part of our access plan.</span></li></ul><p style={{ marginTop: '2rem' }}><Link href="/admissions" className="btn btn-light">See admissions and fees <ArrowRight size={16} /></Link></p></div></div></section>
 
-    <section className="section"><div className="wrap"><div className="section-head narrow"><h2>Serious about the work. Plain about the award.</h2><p>Programmes lead to a certificate awarded by Niger Delta Innovate Ltd/Gte. Recognition from the National Board for Technical Education is being sought, is not guaranteed, and has no confirmed date.</p></div><div className="actions"><Link href="/about" className="btn btn-secondary">How we hold the standard <ArrowRight size={16} /></Link><Link href="/diploma" className="arrow-link" data-testid="link-home-diploma">See the diploma pathway <ChevronRight size={15} /></Link></div></div></section>
+    <section className="section" ref={awardRef}><div className="wrap"><div className="section-head narrow reveal"><h2>Serious about the work. Plain about the award.</h2><p>Programmes lead to a certificate awarded by Niger Delta Innovate Ltd/Gte. Recognition from the National Board for Technical Education is being sought, is not guaranteed, and has no confirmed date.</p></div><div className="actions reveal"><Link href="/about" className="btn btn-secondary">How we hold the standard <ArrowRight size={16} /></Link><Link href="/diploma" className="arrow-link" data-testid="link-home-diploma">See the diploma pathway <ChevronRight size={15} /></Link></div></div></section>
   </PageFrame>;
 }
 
@@ -147,7 +198,8 @@ function ProgrammeDetail({ p }: { p: typeof programmes[number] }) {
 }
 
 function ProgrammesPage() {
-  return <PageFrame><PageHero title="Learn by making something that has to work." image={IMG.hero}>Three certificates are accepting expressions of interest for January 2027. Practical assessment and an in-person capstone defence.</PageHero><section className="section tinted"><div className="wrap"><div className="section-head narrow"><h2>Certificates open for January 2027</h2><p>The Digital Core, Family Core and capstone are shared across each specification.</p></div>{programmes.map((p) => <ProgrammeDetail key={p.id} p={p} />)}</div></section><section className="section" id="later"><div className="wrap"><div className="section-head narrow"><h2>More certificates coming soon.</h2><p>Two intakes a year, January and July. Programmes launch when the instructor, specification and equipment are ready.</p></div><div className="table-scroll"><table><thead><tr><th>Certificate</th><th>Family</th><th>First intake</th></tr></thead><tbody>{catalogue.map(([name, family, intake]) => <tr key={name}><td><strong>{name}</strong></td><td>{family}</td><td className={intake === 'January 2027' ? 'status-open' : 'status-later'}>{intake}</td></tr>)}</tbody></table></div><p className="meta">Data Science and Artificial Intelligence are the only certificates with a prerequisite (or assessed equivalence accepted). Everything else admits on the Institute standard.</p><div className="actions"><Link href="/admissions#apply" className="btn" data-testid="button-programmes-apply">Register interest <ArrowRight size={16} /></Link></div></div></section></PageFrame>;
+  const s1 = useReveal(); const s2 = useReveal();
+  return <PageFrame><PageHero title="Learn by making something that has to work." image={IMG.hero}>Three certificates are accepting expressions of interest for January 2027. Practical assessment and an in-person capstone defence.</PageHero><section className="section tinted" ref={s1}><div className="wrap"><div className="section-head narrow reveal"><h2>Certificates open for January 2027</h2><p>The Digital Core, Family Core and capstone are shared across each specification.</p></div>{programmes.map((p) => <ProgrammeDetail key={p.id} p={p} />)}</div></section><section className="section" id="later" ref={s2}><div className="wrap"><div className="section-head narrow reveal"><h2>More certificates coming soon.</h2><p>Two intakes a year, January and July. Programmes launch when the instructor, specification and equipment are ready.</p></div><div className="table-scroll reveal"><table><thead><tr><th>Certificate</th><th>Family</th><th>First intake</th></tr></thead><tbody>{catalogue.map(([name, family, intake]) => <tr key={name}><td><strong>{name}</strong></td><td>{family}</td><td className={intake === 'January 2027' ? 'status-open' : 'status-later'}>{intake}</td></tr>)}</tbody></table></div><p className="meta">Data Science and Artificial Intelligence are the only certificates with a prerequisite (or assessed equivalence accepted). Everything else admits on the Institute standard.</p><div className="actions reveal"><Link href="/admissions#apply" className="btn btn-pulse" data-testid="button-programmes-apply">Register interest <ArrowRight size={16} /></Link></div></div></section></PageFrame>;
 }
 
 function Facts({ items }: { items: [string, string][] }) {
@@ -155,11 +207,12 @@ function Facts({ items }: { items: [string, string][] }) {
 }
 
 function AdmissionsPage() {
-  return <PageFrame><PageHero title="The entry requirements are deliberately low." image={IMG.admissions}><p>Expressions of interest are open for Web Development, Data Analytics and Graphic Design. The diagnostic assessment, not your school certificate, decides readiness.</p><div className="actions"><a href="#apply" className="btn" data-testid="link-admissions-apply">Register interest <ArrowRight size={16} /></a></div></PageHero>
+  const s1 = useReveal(); const s2 = useReveal(); const s3 = useReveal(); const s4 = useReveal();
+  return <PageFrame><PageHero title="The entry requirements are deliberately low." image={IMG.admissions}><p>Expressions of interest are open for Web Development, Data Analytics and Graphic Design. The diagnostic assessment, not your school certificate, decides readiness.</p><div className="actions"><a href="#apply" className="btn btn-pulse" data-testid="link-admissions-apply">Register interest <ArrowRight size={16} /></a></div></PageHero>
 
-    <section className="section tinted"><div className="wrap"><div className="section-head narrow"><h2>Who we admit</h2></div><Facts items={[['Academic', 'SSCE or NECO attempted, or a portfolio of prior learning assessed as equivalent. Credits are not required at certificate level.'], ['Age', 'Minimum 16. Applicants aged 16 or 17 need written guardian consent and are covered by our safeguarding policy.'], ['Diagnostic', 'Everyone sits it. It tests reasoning, numeracy and comprehension rather than prior knowledge, including for applicants who have never used a computer.'], ['Equipment', 'You do not need to own a laptop or phone. Device access is part of our access plan, not an entry barrier.'], ['Exceptions', 'Data Science and Artificial Intelligence, opening January 2028, carry a prerequisite (or assessed equivalence) that is not waived.']]} /></div></section>
+    <section className="section tinted" ref={s1}><div className="wrap"><div className="section-head narrow reveal"><h2>Who we admit</h2></div><div className="reveal"><Facts items={[['Academic', 'SSCE or NECO attempted, or a portfolio of prior learning assessed as equivalent. Credits are not required at certificate level.'], ['Age', 'Minimum 16. Applicants aged 16 or 17 need written guardian consent and are covered by our safeguarding policy.'], ['Diagnostic', 'Everyone sits it. It tests reasoning, numeracy and comprehension rather than prior knowledge, including for applicants who have never used a computer.'], ['Equipment', 'You do not need to own a laptop or phone. Device access is part of our access plan, not an entry barrier.'], ['Exceptions', 'Data Science and Artificial Intelligence, opening January 2028, carry a prerequisite (or assessed equivalence) that is not waived.']]} /></div></div></section>
 
-    <section className="section"><div className="wrap"><div className="section-head narrow"><h2>Six steps to registration.</h2></div><ol className="steps">{[
+    <section className="section" ref={s2}><div className="wrap"><div className="section-head narrow reveal"><h2>Six steps to registration.</h2></div><ol className="steps reveal">{[
       'Make an enquiry',
       'Apply on Loop',
       'Eligibility and document screening',
@@ -168,9 +221,9 @@ function AdmissionsPage() {
       'Register',
     ].map((title) => <li key={title}><h3>{title}</h3></li>)}</ol></div></section>
 
-    <section className="section tinted"><div className="wrap grid-2"><div><h2>Selection criteria.</h2><p>If applications exceed places, selection is transparent.</p><Facts items={[['60%', 'Diagnostic assessment'], ['20%', 'Prior academic or work record'], ['10%', 'Motivation statement'], ['10%', 'Portfolio or demonstrated prior work'], ['Reserved seats', 'At least 50% women (40% floor), 30% rural and riverine communities, 5% applicants with a disability, 25% articulation from clubs and partner schools']]} /></div><div><h2>Study modes and fees.</h2><Facts items={[['Full-time', 'Blended. Suits school leavers and full-time students.'], ['Evening and weekend', 'For learners already in work.'], ['Hub cohort', 'For learners outside Port Harcourt, at an approved learning hub.'], ['Distance', 'With residency blocks, for learners with no hub in reach.']]} /><p className="meta">Tuition is priced per credit unit within a band. At least 25% of seats in each intake are funded. A minimum of 75% attendance is required. Programmes require a minimum-viable cohort to run; if a cohort does not form, applicants receive a full refund.</p></div></div></section>
+    <section className="section tinted" ref={s3}><div className="wrap grid-2"><div className="reveal-left"><h2>Selection criteria.</h2><p>If applications exceed places, selection is transparent.</p><Facts items={[['60%', 'Diagnostic assessment'], ['20%', 'Prior academic or work record'], ['10%', 'Motivation statement'], ['10%', 'Portfolio or demonstrated prior work'], ['Reserved seats', 'At least 50% women (40% floor), 30% rural and riverine communities, 5% applicants with a disability, 25% articulation from clubs and partner schools']]} /></div><div className="reveal-right"><h2>Study modes and fees.</h2><Facts items={[['Full-time', 'Blended. Suits school leavers and full-time students.'], ['Evening and weekend', 'For learners already in work.'], ['Hub cohort', 'For learners outside Port Harcourt, at an approved learning hub.'], ['Distance', 'With residency blocks, for learners with no hub in reach.']]} /><p className="meta">Tuition is priced per credit unit within a band. At least 25% of seats in each intake are funded. A minimum of 75% attendance is required. Programmes require a minimum-viable cohort to run; if a cohort does not form, applicants receive a full refund.</p></div></div></section>
 
-    <section className="section tinted" id="apply"><div className="wrap form-shell"><div><h2>Register your interest.</h2><p>Send your details and Registry will confirm receipt within two working days. Nothing here commits you to anything.</p></div><EnquiryForm /></div></section>
+    <section className="section tinted" id="apply" ref={s4}><div className="wrap form-shell"><div className="reveal-left"><h2>Register your interest.</h2><p>Send your details and Registry will confirm receipt within two working days. Nothing here commits you to anything.</p></div><div className="reveal-right"><EnquiryForm /></div></div></section>
   </PageFrame>;
 }
 
@@ -204,15 +257,16 @@ function EnquiryForm() {
 }
 
 function DiplomaPage() {
+  const s1 = useReveal(); const s2 = useReveal(); const s3 = useReveal(); const s4 = useReveal();
   return <PageFrame><PageHero title="Your certificate credit carries forward." image={IMG.diploma}>The certificate you start in January 2027 is built so every credit can advance into a diploma.</PageHero>
 
-    <section className="section tinted"><div className="wrap narrow"><div className="notice"><h3>Where the diploma stands today</h3><p>Admission is open for Level 1 certificates only. Diploma admission is not open, and we are not taking diploma fees or issuing diploma offers.</p><p>Diploma-awarding status requires institutional recognition from the National Board for Technical Education, which we do not yet hold. Recognition is being sought, is not guaranteed and has no confirmed date.</p><p>Nothing on this page is an offer of a diploma place or a claim of accreditation.</p></div></div></section>
+    <section className="section tinted" ref={s1}><div className="wrap narrow"><div className="notice reveal-scale"><h3>Where the diploma stands today</h3><p>Admission is open for Level 1 certificates only. Diploma admission is not open, and we are not taking diploma fees or issuing diploma offers.</p><p>Diploma-awarding status requires institutional recognition from the National Board for Technical Education, which we do not yet hold. Recognition is being sought, is not guaranteed and has no confirmed date.</p><p>Nothing on this page is an offer of a diploma place or a claim of accreditation.</p></div></div></section>
 
-    <section className="section"><div className="wrap"><div className="section-head narrow"><h2>What sits above the certificate.</h2><p>Each level opens only when it can be delivered and awarded properly.</p></div><div className="table-scroll"><table><thead><tr><th>Award</th><th>Length</th><th>Credit units</th><th>Status</th></tr></thead><tbody>{[['Certificate · Level 1', '24 weeks', '30', 'Expressions of interest open, January 2027'], ['Professional Diploma · Level 2', '12 months, evening and weekend', '60', 'In development'], ['Diploma · Level 3', '24 months, four semesters', '120', 'In development, subject to recognition'], ['Advanced Diploma · Level 4', '12 months after a diploma', '60', 'Planned']].map(([a, b, c, d]) => <tr key={a}><td><strong>{a}</strong></td><td>{b}</td><td>{c}</td><td className={d.startsWith('Open') ? 'status-open' : 'status-later'}>{d}</td></tr>)}</tbody></table></div><p className="meta">Planned fields: software engineering, data science and AI, robotics and mechatronics, cybersecurity and network systems, electronics and embedded systems, product design and digital media, digital business and entrepreneurship, and renewable energy technology.</p></div></section>
+    <section className="section" ref={s2}><div className="wrap"><div className="section-head narrow reveal"><h2>What sits above the certificate.</h2><p>Each level opens only when it can be delivered and awarded properly.</p></div><div className="table-scroll reveal"><table><thead><tr><th>Award</th><th>Length</th><th>Credit units</th><th>Status</th></tr></thead><tbody>{[['Certificate · Level 1', '24 weeks', '30', 'Expressions of interest open, January 2027'], ['Professional Diploma · Level 2', '12 months, evening and weekend', '60', 'In development'], ['Diploma · Level 3', '24 months, four semesters', '120', 'In development, subject to recognition'], ['Advanced Diploma · Level 4', '12 months after a diploma', '60', 'Planned']].map(([a, b, c, d]) => <tr key={a}><td><strong>{a}</strong></td><td>{b}</td><td>{c}</td><td className={d.startsWith('Open') ? 'status-open' : 'status-later'}>{d}</td></tr>)}</tbody></table></div><p className="meta">Planned fields: software engineering, data science and AI, robotics and mechatronics, cybersecurity and network systems, electronics and embedded systems, product design and digital media, digital business and entrepreneurship, and renewable energy technology.</p></div></section>
 
-    <section className="section tinted"><div className="wrap form-shell"><div><h2>Register interest in the diploma pathway.</h2><p>Put your name down and we will write when a diploma opens. We will not use your details for anything else.</p></div><DiplomaForm /></div></section>
+    <section className="section tinted" ref={s3}><div className="wrap form-shell"><div className="reveal-left"><h2>Register interest in the diploma pathway.</h2><p>Put your name down and we will write when a diploma opens. We will not use your details for anything else.</p></div><div className="reveal-right"><DiplomaForm /></div></div></section>
 
-    <section className="section"><div className="wrap narrow"><p>In the meantime, the certificate is the way in, and it is a complete qualification on its own. <Link href="/programmes">See the three programmes accepting interest for January 2027.</Link></p></div></section>
+    <section className="section" ref={s4}><div className="wrap narrow"><p className="reveal">In the meantime, the certificate is the way in, and it is a complete qualification on its own. <Link href="/programmes">See the three programmes accepting interest for January 2027.</Link></p></div></section>
   </PageFrame>;
 }
 
@@ -223,24 +277,26 @@ function DiplomaForm() {
 }
 
 function AboutPage() {
+  const s1 = useReveal(); const s2 = useReveal(); const s3 = useReveal(); const s4 = useReveal();
   return <PageFrame><PageHero title="A qualification with something solid behind it." image={IMG.about}>The Niger Delta Institute of Digital Technology is the teaching institute of Niger Delta Innovate Ltd/Gte, closing the digital skills gap across the Niger Delta.</PageHero>
 
-    <section className="section"><div className="wrap grid-2"><div><h2>From school clubs to real careers.</h2></div><div><p>Niger Delta Innovate runs digital technology teaching in secondary schools, Technovation Clubs in coding, AI and robotics, and RAIL, the Robotics and AI Laboratory at Okrika Grammar School.</p><p>The Institute exists because those students need somewhere to take the next step that ends in a qualification, not just a certificate of attendance.</p></div></div></section>
+    <section className="section" ref={s1}><div className="wrap grid-2"><div className="reveal-left"><h2>From school clubs to real careers.</h2></div><div className="reveal-right"><p>Niger Delta Innovate runs digital technology teaching in secondary schools, Technovation Clubs in coding, AI and robotics, and RAIL, the Robotics and AI Laboratory at Okrika Grammar School.</p><p>The Institute exists because those students need somewhere to take the next step that ends in a qualification, not just a certificate of attendance.</p></div></div></section>
 
-    <section className="section tinted"><div className="wrap"><div className="section-head narrow"><h2>How we hold the standard.</h2></div><div className="grid-2">{[['Moderated before use', 'An internal moderator approves every assessment before it reaches a student. An external moderator reviews a sample from every intake.'], ['A course file for every course', 'Specifications, materials, mark schemes, moderation approvals, external reports and student voice are held for every intake.'], ['Open about AI, closed where it counts', 'Each assessment states whether AI use is open, assistive or closed. The capstone is defended in person before two assessors.'], ['Nothing advertised before it is ready', 'A programme opens only when its specification is approved, its instructor appointed and its equipment confirmed.']].map(([title, text]) => <div className="contact-tile" key={title}><h3>{title}</h3><p>{text}</p></div>)}</div></div></section>
+    <section className="section tinted" ref={s2}><div className="wrap"><div className="section-head narrow reveal"><h2>How we hold the standard.</h2></div><div className="grid-2 stagger">{[['Moderated before use', 'An internal moderator approves every assessment before it reaches a student. An external moderator reviews a sample from every intake.'], ['A course file for every course', 'Specifications, materials, mark schemes, moderation approvals, external reports and student voice are held for every intake.'], ['Open about AI, closed where it counts', 'Each assessment states whether AI use is open, assistive or closed. The capstone is defended in person before two assessors.'], ['Nothing advertised before it is ready', 'A programme opens only when its specification is approved, its instructor appointed and its equipment confirmed.']].map(([title, text]) => <div className="contact-tile reveal-scale" key={title}><h3>{title}</h3><p>{text}</p></div>)}</div></div></section>
 
-    <section className="section"><div className="wrap"><div className="section-head narrow"><h2>Governance.</h2><p>The Institute is a unit of Niger Delta Innovate and answers to its Board of Directors.</p></div><Facts items={[['Board of Directors', 'Opening or closing programmes, tuition policy, the Institute budget and certificate authority.'], ['Programmes and Awards Committee', 'Approves specifications, ratifies results, awards certificates and appoints the external moderator.'], ['Registry', 'Applications, admissions, registration, attendance, marks, certificates and transcripts.'], ['Quality Assurance', 'Specifications, course files, lesson observation, student voice, external moderation and regulatory correspondence.'], ['Institute Lead', 'Vacancy. Being recruited. The Board exercises direct oversight until appointment.'], ['Safeguarding', 'A designated Safeguarding Lead. Applicants under 18 are covered from the moment they apply.']]} /></div></section>
+    <section className="section" ref={s3}><div className="wrap"><div className="section-head narrow reveal"><h2>Governance.</h2><p>The Institute is a unit of Niger Delta Innovate and answers to its Board of Directors.</p></div><div className="reveal"><Facts items={[['Board of Directors', 'Opening or closing programmes, tuition policy, the Institute budget and certificate authority.'], ['Programmes and Awards Committee', 'Approves specifications, ratifies results, awards certificates and appoints the external moderator.'], ['Registry', 'Applications, admissions, registration, attendance, marks, certificates and transcripts.'], ['Quality Assurance', 'Specifications, course files, lesson observation, student voice, external moderation and regulatory correspondence.'], ['Institute Lead', 'Vacancy. Being recruited. The Board exercises direct oversight until appointment.'], ['Safeguarding', 'A designated Safeguarding Lead. Applicants under 18 are covered from the moment they apply.']]} /></div></div></section>
 
-    <section className="section tinted"><div className="wrap narrow"><div className="notice"><h3>Recognition, stated plainly</h3><p>Programmes lead to a certificate awarded by Niger Delta Innovate Ltd/Gte. Recognition from the National Board for Technical Education is being sought, is not guaranteed, and has no confirmed date.</p><p>Our curriculum is mapped to the National Skills Qualification framework as a design decision, not a claim of accreditation.</p></div></div></section>
+    <section className="section tinted" ref={s4}><div className="wrap narrow"><div className="notice reveal-scale"><h3>Recognition, stated plainly</h3><p>Programmes lead to a certificate awarded by Niger Delta Innovate Ltd/Gte. Recognition from the National Board for Technical Education is being sought, is not guaranteed, and has no confirmed date.</p><p>Our curriculum is mapped to the National Skills Qualification framework as a design decision, not a claim of accreditation.</p></div></div></section>
   </PageFrame>;
 }
 
 function ContactPage() {
+  const s1 = useReveal(); const s2 = useReveal();
   return <PageFrame><PageHero title="Get in touch." image={IMG.contact}>Enquiries are answered within two working days.</PageHero>
 
-    <section className="section"><div className="wrap grid-3">{[['Prospective students', 'Entry requirements, the diagnostic, fees, sponsorship and access support.', <><a href={`mailto:${contactEmail}`}>{contactEmail}</a><br /><a href="tel:+2348067260598">+234 806 726 0598</a><br /><a href="https://wa.me/2348181958816">WhatsApp +234 818 195 8816</a></>], ['Schools, employers and sponsors', 'Learning hubs, sponsored cohorts, staff training and articulation into the Institute.', <><a href={`mailto:${contactEmail}`}>{contactEmail}</a><br /><a href="tel:+2348067260598">+234 806 726 0598</a></>], ['Safeguarding and complaints', 'Concerns about conduct or student safety go straight to the Safeguarding Lead.', <><a href="mailto:info@nigerdeltainnovate.org">info@nigerdeltainnovate.org</a><br /><a href="tel:+2348067260598">+234 806 726 0598</a></>]].map(([title, text, details]) => <div className="contact-tile" key={String(title)}><h3>{title}</h3><p>{text}</p><p>{details}</p></div>)}</div></section>
+    <section className="section" ref={s1}><div className="wrap grid-3 stagger">{[['Prospective students', 'Entry requirements, the diagnostic, fees, sponsorship and access support.', <><a href={`mailto:${contactEmail}`}>{contactEmail}</a><br /><a href="tel:+2348067260598">+234 806 726 0598</a><br /><a href="https://wa.me/2348181958816">WhatsApp +234 818 195 8816</a></>], ['Schools, employers and sponsors', 'Learning hubs, sponsored cohorts, staff training and articulation into the Institute.', <><a href={`mailto:${contactEmail}`}>{contactEmail}</a><br /><a href="tel:+2348067260598">+234 806 726 0598</a></>], ['Safeguarding and complaints', 'Concerns about conduct or student safety go straight to the Safeguarding Lead.', <><a href="mailto:info@nigerdeltainnovate.org">info@nigerdeltainnovate.org</a><br /><a href="tel:+2348067260598">+234 806 726 0598</a></>]].map(([title, text, details]) => <div className="contact-tile reveal-scale" key={String(title)}><h3>{title}</h3><p>{text}</p><p>{details}</p></div>)}</div></section>
 
-    <section className="section tinted"><div className="wrap grid-2"><div><h2>Port Harcourt is home base.</h2><p>Practical teaching in robotics and hardware takes place at RAIL, Okrika Grammar School. Learners outside Port Harcourt study through an approved hub or by distance.</p><div className="actions"><a href="https://wa.me/2348181958816" className="btn" data-testid="link-contact-whatsapp"><MessageCircle size={16} /> Message on WhatsApp</a><a href={`mailto:${contactEmail}`} className="btn btn-secondary" data-testid="link-contact-email">Email Registry <ExternalLink size={15} /></a></div></div><div><Facts items={[['Legal name', 'Niger Delta Innovate Ltd/Gte'], ['Registration', 'RC 9645329, a company limited by guarantee under the Companies and Allied Matters Act 2020'], ['Registered office', 'Plot 100 Avuha Estate, Eneka, Port Harcourt, Rivers State, Nigeria'], ['Website', 'nigerdeltainnovate.org']]} /></div></div></section>
+    <section className="section tinted" ref={s2}><div className="wrap grid-2"><div className="reveal-left"><h2>Port Harcourt is home base.</h2><p>Practical teaching in robotics and hardware takes place at RAIL, Okrika Grammar School. Learners outside Port Harcourt study through an approved hub or by distance.</p><div className="actions"><a href="https://wa.me/2348181958816" className="btn" data-testid="link-contact-whatsapp"><MessageCircle size={16} /> Message on WhatsApp</a><a href={`mailto:${contactEmail}`} className="btn btn-secondary" data-testid="link-contact-email">Email Registry <ExternalLink size={15} /></a></div></div><div className="reveal-right"><Facts items={[['Legal name', 'Niger Delta Innovate Ltd/Gte'], ['Registration', 'RC 9645329, a company limited by guarantee under the Companies and Allied Matters Act 2020'], ['Registered office', 'Plot 100 Avuha Estate, Eneka, Port Harcourt, Rivers State, Nigeria'], ['Website', 'nigerdeltainnovate.org']]} /></div></div></section>
   </PageFrame>;
 }
 
