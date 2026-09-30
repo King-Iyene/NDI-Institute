@@ -18,14 +18,14 @@ const queryClient = new QueryClient();
 const contactEmail = 'info@nigerdeltainnovate.org';
 
 const IMG = {
-  hero: 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=1920&q=80',
-  web: 'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=800&q=80',
-  data: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80',
-  design: 'https://images.unsplash.com/photo-1626785774573-4b799315345d?w=800&q=80',
-  about: 'https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=1920&q=80',
-  admissions: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=1920&q=80',
-  contact: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=1920&q=80',
-  diploma: 'https://images.unsplash.com/photo-1523050854058-8df90110c476?w=1920&q=80',
+  hero: 'https://images.unsplash.com/photo-1531545514256-b1400bc00f31?w=1920&q=80',
+  web: 'https://images.unsplash.com/photo-1607705703571-c5a8695f18f6?w=800&q=80',
+  data: 'https://images.unsplash.com/photo-1573497491208-6b1acb260507?w=800&q=80',
+  design: 'https://images.unsplash.com/photo-1611532736597-de2d4265fba3?w=800&q=80',
+  about: 'https://images.unsplash.com/photo-1577896851231-70ef18881571?w=1920&q=80',
+  admissions: 'https://images.unsplash.com/photo-1523580494863-6f3031224c94?w=1920&q=80',
+  contact: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=1920&q=80',
+  diploma: 'https://images.unsplash.com/photo-1627556704302-624286467c65?w=1920&q=80',
   study: 'https://images.unsplash.com/photo-1531482615713-2afd69097998?w=1920&q=80',
 };
 
