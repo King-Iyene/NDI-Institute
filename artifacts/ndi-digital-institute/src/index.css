@@ -199,6 +199,17 @@ p { max-width: 65ch; color: hsl(var(--muted-foreground)); }
   box-shadow: none;
 }
 .btn-secondary:hover { background: hsl(var(--muted)); color: hsl(var(--foreground)); box-shadow: var(--shadow-sm); border-color: hsl(var(--muted-foreground)); }
+.hero-img .btn-secondary, .dark-section .btn-secondary {
+  color: #fff;
+  border-color: rgba(255,255,255,.4);
+  background: rgba(255,255,255,.08);
+  backdrop-filter: blur(6px);
+}
+.hero-img .btn-secondary:hover, .dark-section .btn-secondary:hover {
+  background: rgba(255,255,255,.18);
+  border-color: rgba(255,255,255,.7);
+  color: #fff;
+}
 .btn-light { background: #fff; color: hsl(var(--secondary)); border: none; box-shadow: var(--shadow-md); }
 .btn-light:hover { color: hsl(var(--secondary)); background: #fff; box-shadow: var(--shadow-lg); }
 

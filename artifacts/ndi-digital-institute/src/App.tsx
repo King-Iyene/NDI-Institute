@@ -59,7 +59,7 @@ function useCountUp(end: number, duration = 1200) {
 }
 
 const IMG = {
-  hero: 'https://images.unsplash.com/photo-1531482615713-2afd69097998?w=1920&q=80',
+  hero: 'https://images.unsplash.com/photo-1594736797933-d0d7b47e6d35?w=1920&q=80',
   web: 'https://images.unsplash.com/photo-1620829813573-7c9e1877706f?w=800&q=80',
   data: 'https://images.unsplash.com/photo-1589114207353-1fc98a11070b?w=800&q=80',
   design: 'https://images.unsplash.com/photo-1611432579402-7037e3e2c1e4?w=800&q=80',
