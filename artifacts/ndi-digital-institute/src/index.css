@@ -72,7 +72,7 @@ p { margin: 0; }
   border-bottom: 1px solid var(--line);
 }
 .header-inner { display: flex; align-items: center; gap: 26px; padding-block: 13px; }
-.wordmark { display: flex; align-items: center; color: var(--fg); text-decoration: none; margin-right: auto; width: min(200px, 30vw); }
+.wordmark { display: flex; align-items: center; color: var(--fg); text-decoration: none; margin-right: auto; width: min(120px, 22vw); }
 .wordmark-logo { display: block; width: 100%; height: auto; }
 .nav { display: flex; align-items: center; gap: 20px; }
 .nav-link {
@@ -498,7 +498,7 @@ td .sub { display: block; font-family: var(--body-font); font-weight: 400; font-
 .footer ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 9px; font-size: 15.5px; }
 .footer a { text-decoration: none; color: rgba(242,239,231,.88); }
 .footer a:hover { text-decoration: underline; }
-.footer-logo { display: block; width: min(160px, 100%); height: auto; margin-bottom: 1.2rem; }
+.footer-logo { display: block; width: min(100px, 100%); height: auto; margin-bottom: 1.2rem; }
 .colophon {
   margin-top: clamp(32px, 4vw, 48px);
   padding-top: 22px;
