@@ -67,7 +67,7 @@ const IMG = {
   admissions: 'https://images.unsplash.com/photo-1678695972687-033fa0bdbac9?w=1920&q=80',
   contact: 'https://images.unsplash.com/photo-1594751543129-6701ad444259?w=1920&q=80',
   diploma: 'https://images.unsplash.com/photo-1531384441138-2736e62e0919?w=1920&q=80',
-  study: 'https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=1920&q=80',
+  study: 'https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=1920&q=80',
   collab: 'https://images.unsplash.com/photo-1624670319970-37aa780d4874?w=1920&q=80',
   teachWeb: 'https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?w=800&q=80',
   teachData: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=800&q=80',

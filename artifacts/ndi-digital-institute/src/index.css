@@ -234,12 +234,13 @@ p { margin: 0; }
 .section-img {
   border-radius: 8px;
   overflow: hidden;
-  max-height: 400px;
+  max-height: 420px;
 }
 .section-img img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center 20%;
   display: block;
 }
 .teachers-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); }
