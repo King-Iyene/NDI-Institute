@@ -225,12 +225,15 @@ function HomePage() {
       </div>
       <div className="programme-grid stagger">
         {programmes.map((p) => <div className="oc reveal-scale" key={p.id} data-testid={`card-programme-${p.id}`}>
-          <p className="code">{p.code} · {p.family}</p>
-          <h3>{p.title}</h3>
-          <p className="roles">{p.roles}</p>
-          <ul>{p.bullets.map((b) => <li key={b}>{b}</li>)}</ul>
-          <p className="where"><b>Where the work is</b><br />{p.where}</p>
-          <Link href={`/programmes#${p.id}`} className="more">Full specification <span className="arw">&rarr;</span></Link>
+          <div className="oc-img" style={{ backgroundImage: `url(${p.image})` }} />
+          <div className="oc-body">
+            <p className="code">{p.code} · {p.family}</p>
+            <h3>{p.title}</h3>
+            <p className="roles">{p.roles}</p>
+            <ul>{p.bullets.map((b) => <li key={b}>{b}</li>)}</ul>
+            <p className="where"><b>Where the work is</b><br />{p.where}</p>
+            <Link href={`/programmes#${p.id}`} className="more">Full specification <span className="arw">&rarr;</span></Link>
+          </div>
         </div>)}
       </div>
     </div></section>
@@ -243,6 +246,9 @@ function HomePage() {
           <h2>Earning from here.</h2>
         </div>
         <p className="lede reveal">Every programme includes freelance and remote-work skills so you can sell what you learn to clients and employers who are not in your city.</p>
+      </div>
+      <div className="section-img reveal" style={{ marginBottom: '2.5rem' }}>
+        <img src={IMG.collab} alt="Students collaborating on tech projects" loading="lazy" />
       </div>
       <div className="cols3 stagger">
         <div className="col reveal">
@@ -281,6 +287,9 @@ function HomePage() {
         <p className="eyebrow">Outcomes</p>
         <h2>What you leave with.</h2>
         <p>Six things that are ready when you are, not things we hope will happen eventually.</p>
+      </div>
+      <div className="section-img reveal" style={{ marginBottom: '2.5rem' }}>
+        <img src={IMG.study} alt="Student focused on digital work" loading="lazy" />
       </div>
       <div className="grid6 stagger">
         {outcomes.map((o) => <div className="cell reveal-scale" key={o.n}>

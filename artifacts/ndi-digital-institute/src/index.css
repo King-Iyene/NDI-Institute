@@ -206,11 +206,41 @@ p { margin: 0; }
 .programme-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); }
 .oc {
   background: var(--surface);
-  padding: 26px 24px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  min-width: 0;
+}
+.oc-img {
+  width: 100%;
+  height: 220px;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+.oc-img::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, transparent 40%, var(--surface) 100%);
+}
+.oc-body {
+  padding: 20px 24px 28px;
   display: flex;
   flex-direction: column;
   gap: 16px;
-  min-width: 0;
+  flex: 1;
+}
+.section-img {
+  border-radius: 8px;
+  overflow: hidden;
+  max-height: 400px;
+}
+.section-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 .oc h3 { font-size: 22px; }
 .oc .code { font-family: var(--mono-font); font-size: 10.5px; letter-spacing: .12em; color: var(--muted); text-transform: uppercase; }
