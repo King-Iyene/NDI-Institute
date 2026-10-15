@@ -59,16 +59,16 @@ function useCountUp(end: number, duration = 1200) {
 }
 
 const IMG = {
-  hero: 'https://images.unsplash.com/photo-1577896851231-70ef18881754?w=1920&q=80',
-  web: 'https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=800&q=80',
-  data: 'https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=800&q=80',
-  design: 'https://images.unsplash.com/photo-1559136555-9303baea8ebd?w=800&q=80',
-  about: 'https://images.unsplash.com/photo-1591115765373-5207764f72e7?w=1920&q=80',
-  admissions: 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=1920&q=80',
+  hero: 'https://images.unsplash.com/photo-1594736797933-d0d7b47e6d35?w=1920&q=80',
+  web: 'https://images.unsplash.com/photo-1620829813573-7c9e1877706f?w=800&q=80',
+  data: 'https://images.unsplash.com/photo-1589114207353-1fc98a11070b?w=800&q=80',
+  design: 'https://images.unsplash.com/photo-1611432579402-7037e3e2c1e4?w=800&q=80',
+  about: 'https://images.unsplash.com/photo-1615891081220-9116de3e1afd?w=1920&q=80',
+  admissions: 'https://images.unsplash.com/photo-1678695972687-033fa0bdbac9?w=1920&q=80',
   contact: 'https://images.unsplash.com/photo-1594751543129-6701ad444259?w=1920&q=80',
-  diploma: 'https://images.unsplash.com/photo-1758270703602-309dba204bbc?w=1920&q=80',
+  diploma: 'https://images.unsplash.com/photo-1531384441138-2736e62e0919?w=1920&q=80',
   study: 'https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=1920&q=80',
-  collab: 'https://images.unsplash.com/photo-1543269865-cbf427effbad?w=1920&q=80',
+  collab: 'https://images.unsplash.com/photo-1624670319970-37aa780d4874?w=1920&q=80',
 };
 
 const programmes = [
@@ -169,7 +169,6 @@ function PageFrame({ children }: { children: React.ReactNode }) {
 
 function PageHero({ title, children, image }: { title: string; children: React.ReactNode; image?: string }) {
   return <section className={`page-hero hero-enter${image ? ' img-section' : ''}`} style={image ? { backgroundImage: `url(${image})` } : undefined}>
-    {image && <div className="overlay" />}
     <div className="wrap" style={{ position: 'relative', zIndex: 2 }}>
       <h1>{title}</h1>
       <div className="lede">{children}</div>
@@ -202,7 +201,7 @@ function HomePage() {
   return <PageFrame>
     {/* ── Hero ── */}
     <section className="hero hero-img hero-enter" style={{ backgroundImage: `url(${IMG.hero})` }}>
-      <div className="wrap">
+      <div className="wrap" style={{ position: 'relative', zIndex: 2 }}>
         <p className="eyebrow">Niger Delta Institute of Digital Technology</p>
         <h1>Learn a digital trade <em>well enough to be paid for it.</em></h1>
         <p className="lede">24-week practical certificates in Port Harcourt. No prior experience needed, no laptop required.</p>
@@ -327,7 +326,6 @@ function HomePage() {
 
     {/* ── For people already working ── */}
     <section className="section hero-img" style={{ backgroundImage: `url(${IMG.study})` }} ref={blendedRef}>
-      <div className="overlay" />
       <div className="wrap split-feature" style={{ position: 'relative', zIndex: 2 }}>
         <div className="reveal-left">
           <p className="eyebrow">Evening and weekend mode</p>

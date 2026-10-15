@@ -148,9 +148,9 @@ p { margin: 0; }
 }
 .hero-img::before {
   background:
-    linear-gradient(160deg, rgba(7,20,15,.92) 0%, rgba(7,20,15,.7) 50%, rgba(12,59,46,.5) 100%),
+    linear-gradient(160deg, rgba(7,20,15,.78) 0%, rgba(7,20,15,.55) 50%, rgba(12,59,46,.4) 100%),
     radial-gradient(760px 420px at 12% -10%, var(--accent-soft), transparent 70%);
-  opacity: .9;
+  opacity: 1;
   mask-image: none;
 }
 
@@ -485,11 +485,11 @@ td .sub { display: block; font-family: var(--body-font); font-weight: 400; font-
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(160deg, rgba(7,20,15,.92) 0%, rgba(7,20,15,.7) 50%, rgba(12,59,46,.5) 100%);
+  background: linear-gradient(160deg, rgba(7,20,15,.78) 0%, rgba(7,20,15,.55) 50%, rgba(12,59,46,.4) 100%);
   z-index: 1;
 }
 .page-hero.img-section .wrap { z-index: 2; }
-.overlay { position: absolute; inset: 0; background: linear-gradient(160deg, rgba(7,20,15,.88) 0%, rgba(7,20,15,.65) 50%, rgba(12,59,46,.45) 100%); z-index: 1; }
+.overlay { position: absolute; inset: 0; background: linear-gradient(160deg, rgba(7,20,15,.7) 0%, rgba(7,20,15,.5) 50%, rgba(12,59,46,.35) 100%); z-index: 1; }
 
 /* ── Animations ── */
 .fade-in { animation: fade-in .5s ease both; }
