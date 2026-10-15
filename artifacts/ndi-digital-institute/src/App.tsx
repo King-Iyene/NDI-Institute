@@ -69,6 +69,9 @@ const IMG = {
   diploma: 'https://images.unsplash.com/photo-1531384441138-2736e62e0919?w=1920&q=80',
   study: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=1920&q=80',
   collab: 'https://images.unsplash.com/photo-1573164713988-8665fc963095?w=1920&q=80',
+  teachWeb: 'https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?w=800&q=80',
+  teachData: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=800&q=80',
+  teachDesign: 'https://images.unsplash.com/photo-1531384441138-2736e62e0919?w=800&q=80',
 };
 
 const programmes = [
@@ -312,7 +315,7 @@ function HomePage() {
       </div>
       <div className="teachers-grid stagger" style={{ marginTop: '2.5rem' }}>
         <div className="teacher-card reveal-scale">
-          <div className="teacher-img" style={{ backgroundImage: `url(${IMG.web})` }} />
+          <div className="teacher-img" style={{ backgroundImage: `url(${IMG.teachWeb})` }} />
           <div className="teacher-body">
             <p className="code">Web Development</p>
             <h4>Appointed instructor</h4>
@@ -320,7 +323,7 @@ function HomePage() {
           </div>
         </div>
         <div className="teacher-card reveal-scale">
-          <div className="teacher-img" style={{ backgroundImage: `url(${IMG.data})` }} />
+          <div className="teacher-img" style={{ backgroundImage: `url(${IMG.teachData})` }} />
           <div className="teacher-body">
             <p className="code">Data Analytics</p>
             <h4>Appointed instructor</h4>
@@ -328,7 +331,7 @@ function HomePage() {
           </div>
         </div>
         <div className="teacher-card reveal-scale">
-          <div className="teacher-img" style={{ backgroundImage: `url(${IMG.design})` }} />
+          <div className="teacher-img" style={{ backgroundImage: `url(${IMG.teachDesign})` }} />
           <div className="teacher-body">
             <p className="code">Graphic Design</p>
             <h4>Appointed instructor</h4>
