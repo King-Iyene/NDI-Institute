@@ -11,8 +11,8 @@ import {
   Link, Route, Switch, Router as WouterRouter, useLocation,
 } from 'wouter';
 import NotFound from '@/pages/not-found';
-import ndiLogo from '@assets/tmp3sykabk4_1788802155179.webp';
-import ndiFooterLogo from '@assets/6a7c377c1fd638d364c21328_1788802293520.png';
+import ndiLogo from '@assets/ndi-logo-white.png';
+import ndiFooterLogo from '@assets/ndi-logo-white.png';
 
 const queryClient = new QueryClient();
 const contactEmail = 'info@nigerdeltainnovate.org';
