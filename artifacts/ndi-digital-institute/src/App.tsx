@@ -59,16 +59,16 @@ function useCountUp(end: number, duration = 1200) {
 }
 
 const IMG = {
-  hero: 'https://images.unsplash.com/photo-1594736797933-d0d7b47e6d35?w=1920&q=80',
+  hero: 'https://images.unsplash.com/photo-1531482615713-2afd69097998?w=1920&q=80',
   web: 'https://images.unsplash.com/photo-1620829813573-7c9e1877706f?w=800&q=80',
-  data: 'https://images.unsplash.com/photo-1589114207353-1fc98a11070b?w=800&q=80',
+  data: 'https://images.unsplash.com/photo-1523580846011-d3a5bc25702b?w=800&q=80',
   design: 'https://images.unsplash.com/photo-1611432579402-7037e3e2c1e4?w=800&q=80',
   about: 'https://images.unsplash.com/photo-1615891081220-9116de3e1afd?w=1920&q=80',
   admissions: 'https://images.unsplash.com/photo-1678695972687-033fa0bdbac9?w=1920&q=80',
   contact: 'https://images.unsplash.com/photo-1594751543129-6701ad444259?w=1920&q=80',
   diploma: 'https://images.unsplash.com/photo-1531384441138-2736e62e0919?w=1920&q=80',
-  study: 'https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=1920&q=80',
-  collab: 'https://images.unsplash.com/photo-1624670319970-37aa780d4874?w=1920&q=80',
+  study: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=1920&q=80',
+  collab: 'https://images.unsplash.com/photo-1573164713988-8665fc963095?w=1920&q=80',
 };
 
 const programmes = [
