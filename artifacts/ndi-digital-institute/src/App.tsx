@@ -300,34 +300,47 @@ function HomePage() {
       </div>
     </div></section>
 
-    {/* ── Credit structure ── */}
-    <section className="section tinted" ref={creditsRef}><div className="wrap">
-      <div className="section-head reveal">
-        <p className="eyebrow">Curriculum</p>
-        <h2>Thirty credit units. One project you defend.</h2>
-        <p>One credit unit is thirty notional learner hours. Your 900 hours move from shared foundations to specialist practice, then into a capstone built for a real brief.</p>
-      </div>
-      <div className="blockbar reveal" role="img" aria-label="Certificate structure: Digital Core 6 units, Family Core 8 units, Specialist block 12 units, Capstone 4 units">
-        <div className="b1"><b>Digital Core</b><span>6 units</span></div>
-        <div className="b2"><b>Family Core</b><span>8 units</span></div>
-        <div className="b3"><b>Specialist block</b><span>12 units</span></div>
-        <div className="b4"><b>Capstone</b><span>4 units</span></div>
-      </div>
-      <div className="grid-2 stagger" style={{ marginTop: '2.5rem' }}>
+    {/* ── Who teaches you ── */}
+    <section className="section" ref={creditsRef}><div className="wrap">
+      <div className="grid-2" style={{ alignItems: 'center' }}>
         <div className="reveal-left">
-          <h3>Shared foundations</h3>
-          <p>Everyone takes computing environments, professional practice for technical work, and online safety and data protection under the Nigeria Data Protection Act 2023.</p>
+          <h2>Who teaches you, and where.</h2>
         </div>
         <div className="reveal-right">
-          <h3>A capstone with nowhere to hide</h3>
-          <p>A partner brief or community need becomes your deadline. You produce the work and defend it in person before two assessors.</p>
+          <p>Every programme opens with an appointed instructor, an approved specification and confirmed equipment. No cohort runs without all three.</p>
+        </div>
+      </div>
+      <div className="teachers-grid stagger" style={{ marginTop: '2.5rem' }}>
+        <div className="teacher-card reveal-scale">
+          <div className="teacher-img" style={{ backgroundImage: `url(${IMG.web})` }} />
+          <div className="teacher-body">
+            <p className="code">Web Development</p>
+            <h4>Appointed instructor</h4>
+            <p>JavaScript, React, backend fundamentals, deployment and client delivery.</p>
+          </div>
+        </div>
+        <div className="teacher-card reveal-scale">
+          <div className="teacher-img" style={{ backgroundImage: `url(${IMG.data})` }} />
+          <div className="teacher-body">
+            <p className="code">Data Analytics</p>
+            <h4>Appointed instructor</h4>
+            <p>SQL, dashboards, statistical reasoning and presenting findings to decision-makers.</p>
+          </div>
+        </div>
+        <div className="teacher-card reveal-scale">
+          <div className="teacher-img" style={{ backgroundImage: `url(${IMG.design})` }} />
+          <div className="teacher-body">
+            <p className="code">Graphic Design</p>
+            <h4>Appointed instructor</h4>
+            <p>Identity, layout, print production, digital formats and client-ready delivery.</p>
+          </div>
         </div>
       </div>
     </div></section>
 
     {/* ── For people already working ── */}
-    <section className="section hero-img" style={{ backgroundImage: `url(${IMG.study})` }} ref={blendedRef}>
-      <div className="wrap split-feature" style={{ position: 'relative', zIndex: 2 }}>
+    <section className="section tinted" ref={blendedRef}><div className="wrap">
+      <div className="grid-2" style={{ alignItems: 'start', gap: '3rem' }}>
         <div className="reveal-left">
           <p className="eyebrow">Evening and weekend mode</p>
           <div className="feature-number">40<span style={{ fontSize: '2rem' }}>%</span></div>
@@ -342,11 +355,11 @@ function HomePage() {
             <li><strong>No time off work</strong><span>Evening and weekend mode is built so you keep your job and study alongside it.</span></li>
           </ul>
           <p style={{ marginTop: '2rem' }}>
-            <Link href="/admissions" className="btn btn-light">See admissions and fees <ArrowRight size={16} /></Link>
+            <Link href="/admissions" className="btn">See admissions and fees <ArrowRight size={16} /></Link>
           </p>
         </div>
       </div>
-    </section>
+    </div></section>
 
     {/* ── Scholarships ── */}
     <section className="section funded-band" ref={scholarRef}><div className="wrap">
