@@ -214,14 +214,6 @@ function HomePage() {
       <div className="scroll-hint"><ChevronDown size={28} /></div>
     </section>
 
-    {/* ── Stats ── */}
-    <div className="stats-row">
-      <CountStat end={24} label="weeks" />
-      <CountStat end={30} label="credit units" />
-      <CountStat end={3} label="programmes open" />
-      <CountStat end={4} label="study modes" />
-    </div>
-
     {/* ── Programmes (vertical cards) ── */}
     <section className="section" ref={careersRef}><div className="wrap">
       <div className="shead">
