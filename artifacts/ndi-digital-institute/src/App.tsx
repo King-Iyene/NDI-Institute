@@ -140,7 +140,7 @@ function SiteHeader() {
   const [location] = useLocation();
   const [open, setOpen] = useState(false);
   useEffect(() => setOpen(false), [location]);
-  const links = [['/', 'Home'], ['/programmes', 'Programmes'], ['/admissions', 'Admissions'], ['/diploma', 'Diploma pathway'], ['/about', 'About'], ['/contact', 'Contact']];
+  const links = [['/', 'Home'], ['/programmes', 'Programmes'], ['/admissions', 'Admissions'], ['/fees', 'Fees'], ['/diploma', 'Diploma pathway'], ['/about', 'About'], ['/contact', 'Contact']];
   return <header className="site-header">
     <div className="wrap header-inner">
       <Link href="/" className="wordmark" data-testid="link-home"><LogoMark /></Link>
@@ -157,7 +157,7 @@ function Footer() {
   return <footer className="footer"><div className="wrap">
     <div className="footer-grid">
       <div><img className="footer-logo" src={ndiFooterLogo} alt="Niger Delta Innovate" /><h3>Niger Delta Institute of Digital Technology</h3><p style={{ marginTop: '10px', color: 'rgba(242,239,231,.72)' }}>Closing the digital skills gap across the Niger Delta.</p></div>
-      <div><h4>Study</h4><ul><li><Link href="/programmes">Programmes</Link></li><li><Link href="/admissions">Admissions</Link></li><li><Link href="/diploma">Diploma pathway</Link></li><li><Link href="/admissions#apply">Register interest</Link></li></ul></div>
+      <div><h4>Study</h4><ul><li><Link href="/programmes">Programmes</Link></li><li><Link href="/admissions">Admissions</Link></li><li><Link href="/fees">Fees</Link></li><li><Link href="/diploma">Diploma pathway</Link></li><li><Link href="/admissions#apply">Register interest</Link></li></ul></div>
       <div><h4>Reach Registry</h4><ul><li><a href="mailto:info@nigerdeltainnovate.org">info@nigerdeltainnovate.org</a></li><li><a href="tel:+2348067260598">+234 806 726 0598</a></li><li><a href="https://wa.me/2348181958816">WhatsApp +234 818 195 8816</a></li><li>Plot 100 Avuha Estate, Eneka, Port Harcourt, Rivers State</li></ul></div>
     </div>
     <div className="colophon"><p>Niger Delta Innovate Ltd/Gte · RC 9645329 · A Company Limited by Guarantee · Port Harcourt, Rivers State</p><p>Awards are certificates of Niger Delta Innovate. Recognition from the National Board for Technical Education is being sought and is not in place.</p><p>Your data is handled under the Nigeria Data Protection Act 2023.</p></div>
@@ -358,7 +358,7 @@ function HomePage() {
             <li><strong>No time off work</strong><span>Evening and weekend mode is built so you keep your job and study alongside it.</span></li>
           </ul>
           <p style={{ marginTop: '2rem' }}>
-            <Link href="/admissions" className="btn">See admissions and fees <ArrowRight size={16} /></Link>
+            <Link href="/fees" className="btn">See fees and funding <ArrowRight size={16} /></Link>
           </p>
         </div>
       </div>
@@ -450,6 +450,79 @@ function ProgrammesPage() {
 
 function Facts({ items }: { items: [string, string][] }) {
   return <ul className="rule-list">{items.map(([label, text]) => <li key={`${label}-${text}`}><strong>{label}</strong><span>{text}</span></li>)}</ul>;
+}
+
+const feeSchedule: { family: string; tracks: { name: string; band: number; cohort: string; short: string; cert: string; diploma: string }[] }[] = [
+  { family: 'Hardware & Infrastructure', tracks: [
+    { name: 'Computer Hardware & Networks', band: 3, cohort: 'Jan 2028', short: '₦70,000', cert: '₦475,000', diploma: '₦880,000' },
+    { name: 'Robotics & Embedded Systems', band: 3, cohort: 'Jan 2028', short: '₦70,000', cert: '₦495,000', diploma: '₦920,000' },
+  ]},
+  { family: 'Software & Build', tracks: [
+    { name: 'Web Development', band: 1, cohort: 'Jan 2027', short: '₦40,000', cert: '₦255,000', diploma: '₦480,000' },
+    { name: 'Mobile App Development', band: 2, cohort: 'Jul 2028', short: '₦55,000', cert: '₦350,000', diploma: '₦660,000' },
+    { name: 'Software Engineering', band: 2, cohort: 'Jul 2028', short: '₦55,000', cert: '₦370,000', diploma: '₦700,000' },
+  ]},
+  { family: 'Data & AI', tracks: [
+    { name: 'Data Analytics', band: 1, cohort: 'Jan 2027', short: '₦40,000', cert: '₦255,000', diploma: '₦480,000' },
+    { name: 'Data Science & AI', band: 2, cohort: 'Jan 2028', short: '₦55,000', cert: '₦370,000', diploma: '₦700,000' },
+    { name: 'Cybersecurity', band: 2, cohort: 'Jul 2028', short: '₦55,000', cert: '₦370,000', diploma: '₦700,000' },
+  ]},
+  { family: 'Design', tracks: [
+    { name: 'Graphic Design', band: 1, cohort: 'Jan 2027', short: '₦40,000', cert: '₦275,000', diploma: '₦520,000' },
+    { name: 'UI/UX Design', band: 2, cohort: 'Jul 2028', short: '₦55,000', cert: '₦350,000', diploma: '₦660,000' },
+    { name: 'Motion & Video', band: 2, cohort: 'Jul 2028', short: '₦55,000', cert: '₦350,000', diploma: '₦660,000' },
+  ]},
+  { family: 'Digital Work & Delivery', tracks: [
+    { name: 'Digital Marketing', band: 1, cohort: 'Jul 2027', short: '₦40,000', cert: '₦255,000', diploma: '₦480,000' },
+    { name: 'Product Management', band: 2, cohort: 'Jul 2028', short: '₦55,000', cert: '₦350,000', diploma: '₦660,000' },
+    { name: 'Project Management & Agile', band: 1, cohort: 'Jul 2028', short: '₦40,000', cert: '₦255,000', diploma: '₦480,000' },
+  ]},
+];
+
+function FeesPage() {
+  const s1 = useReveal(); const s2 = useReveal(); const s3 = useReveal(); const s4 = useReveal(); const s5 = useReveal(); const s6 = useReveal();
+  return <PageFrame><PageHero title="Transparent pricing, no hidden charges." image={IMG.admissions}><p>Tuition is priced per credit unit within a band. At least 25% of seats in every intake are funded through scholarships and bursaries.</p></PageHero>
+
+    <section className="section tinted" ref={s1}><div className="wrap"><div className="section-head narrow reveal"><h2>Three award levels.</h2><p>Each level builds on the one below. Your certificate credit carries forward into the diploma.</p></div><div className="grid-3 stagger">{[
+      ['Short course', '1 month · 5 credit units', 'A focused module you can take on its own or as a taster before committing to the full certificate.'],
+      ['Certificate', '6 months · 30 credit units', 'The full Level 1 qualification. Practical assessment and an in-person capstone defence.'],
+      ['Professional Diploma', '9–12 months · 60 credit units', 'The Level 2 award, evening and weekend. Admission opens when recognition is secured.'],
+    ].map(([title, meta, desc]) => <div className="contact-tile reveal-scale" key={title}><h3>{title}</h3><p className="meta" style={{ margin: '.5rem 0' }}>{meta}</p><p>{desc}</p></div>)}</div></div></section>
+
+    <section className="section" ref={s2}><div className="wrap"><div className="section-head narrow reveal"><h2>Fee schedule.</h2><p>Tuition only. Non-tuition charges are listed separately below.</p></div>{feeSchedule.map((fam) => <div key={fam.family} className="reveal" style={{ marginBottom: '2rem' }}><h3 style={{ marginBottom: '.75rem' }}>{fam.family}</h3><div className="table-scroll"><table><thead><tr><th>Track</th><th>Band</th><th>Cohort 1</th><th>Short course</th><th>Certificate</th><th>Prof. Diploma</th></tr></thead><tbody>{fam.tracks.map((t) => <tr key={t.name}><td><strong>{t.name}</strong></td><td>{t.band}</td><td className={t.cohort === 'Jan 2027' ? 'status-open' : 'status-later'}>{t.cohort}</td><td>{t.short}</td><td>{t.cert}</td><td>{t.diploma}</td></tr>)}</tbody></table></div></div>)}<p className="meta reveal">Band 1: ₦8,000 per credit unit. Band 2: ₦11,000 per credit unit. Band 3: ₦14,000 per credit unit. Bands reflect equipment and licensing costs, not difficulty.</p></div></section>
+
+    <section className="section tinted" ref={s3}><div className="wrap grid-2"><div className="reveal-left"><h2>Payment plans.</h2><Facts items={[
+      ['Pay in full', '5% discount on total tuition when paid before teaching begins.'],
+      ['Per semester', 'Split across two semesters. No uplift.'],
+      ['Monthly', 'Spread over the programme length. 5% uplift on total tuition.'],
+    ]} /><p className="meta" style={{ marginTop: '1rem' }}>All payment plans are agreed at registration. If a payment is missed, access to teaching is paused until the account is settled.</p></div><div className="reveal-right"><h2>Non-tuition charges.</h2><Facts items={[
+      ['Application fee', '₦5,000 — non-refundable, paid when you apply.'],
+      ['Certificate and transcript', '₦10,000 — paid before certificate is issued.'],
+      ['Programme kit', 'Varies by programme. Covers materials and consumables.'],
+      ['Hub access fee', '₦20,000 — for learners studying at an approved hub outside Port Harcourt.'],
+      ['Resit fee', '₦5,000 per assessment. One free resit per failed component.'],
+    ]} /></div></div></section>
+
+    <section className="section" ref={s4}><div className="wrap grid-2"><div className="reveal-left"><h2>Refund policy.</h2><Facts items={[
+      ['Before teaching begins', '100% refund of tuition paid.'],
+      ['Weeks 1–2', '75% refund.'],
+      ['Weeks 3–4', '50% refund.'],
+      ['After week 4', 'No refund. The application fee is non-refundable at any stage.'],
+    ]} /><p className="meta" style={{ marginTop: '1rem' }}>If a cohort does not form the minimum-viable size, all applicants receive a full refund.</p></div><div className="reveal-right"><h2>Scholarships and bursaries.</h2><p>At least 25% of seats in each intake are funded.</p><Facts items={[
+      ['Full scholarship', '10% of funded seats. Covers tuition, kit and hub fee.'],
+      ['Bursary', '15% of funded seats. Covers 25–50% of tuition.'],
+      ['Selection', 'Diagnostic score, financial need, gender (women priority), geography (rural and riverine priority) and disability.'],
+      ['Conditions', 'Minimum 75% attendance. Scholarship holders who withdraw forfeit future funding eligibility.'],
+    ]} /></div></div></section>
+
+    <section className="section tinted" ref={s5}><div className="wrap"><div className="section-head narrow reveal"><h2>Sponsor a seat.</h2><p>Employers, organisations and individuals can sponsor learners through a cohort.</p></div><div className="reveal"><Facts items={[
+      ['Sponsor seat price', 'Tuition + 10% administration charge + ₦40,000 access allowance (covers kit, hub fee and certificate).'],
+      ['What the sponsor gets', 'Named seat(s), progress reports, priority access to the learner for internship or employment.'],
+      ['Minimum commitment', 'One seat, one intake.'],
+    ]} /></div></div></section>
+
+    <section className="section" ref={s6}><div className="wrap narrow"><div className="notice reveal-scale"><h3>A note on accreditation</h3><p>Programmes lead to a certificate awarded by Niger Delta Innovate Ltd/Gte. Recognition from the National Board for Technical Education is being sought, is not guaranteed and has no confirmed date. Nothing on this page is a claim of accreditation.</p></div><div className="actions reveal" style={{ marginTop: '2rem' }}><Link href="/admissions#apply" className="btn btn-pulse">Register interest <ArrowRight size={16} /></Link><Link href="/programmes" className="btn btn-secondary">See the programmes <ArrowRight size={16} /></Link></div></div></section>
+  </PageFrame>;
 }
 
 function AdmissionsPage() {
@@ -547,7 +620,7 @@ function ContactPage() {
 }
 
 function Router() {
-  return <ErrorBoundary resetKey={useLocation()[0]}><Switch><Route path="/" component={HomePage} /><Route path="/programmes" component={ProgrammesPage} /><Route path="/admissions" component={AdmissionsPage} /><Route path="/diploma" component={DiplomaPage} /><Route path="/about" component={AboutPage} /><Route path="/contact" component={ContactPage} /><Route component={NotFound} /></Switch></ErrorBoundary>;
+  return <ErrorBoundary resetKey={useLocation()[0]}><Switch><Route path="/" component={HomePage} /><Route path="/programmes" component={ProgrammesPage} /><Route path="/admissions" component={AdmissionsPage} /><Route path="/fees" component={FeesPage} /><Route path="/diploma" component={DiplomaPage} /><Route path="/about" component={AboutPage} /><Route path="/contact" component={ContactPage} /><Route component={NotFound} /></Switch></ErrorBoundary>;
 }
 
 function App() {
