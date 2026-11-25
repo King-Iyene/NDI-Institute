@@ -11,6 +11,7 @@ import {
   Link, Route, Switch, Router as WouterRouter, useLocation,
 } from 'wouter';
 import NotFound from '@/pages/not-found';
+import { PortalApp } from './portal';
 import ndiLogo from '@assets/ndi-logo-white.png';
 import ndiFooterLogo from '@assets/ndi-logo-white.png';
 
@@ -620,7 +621,9 @@ function ContactPage() {
 }
 
 function Router() {
-  return <ErrorBoundary resetKey={useLocation()[0]}><Switch><Route path="/" component={HomePage} /><Route path="/programmes" component={ProgrammesPage} /><Route path="/admissions" component={AdmissionsPage} /><Route path="/fees" component={FeesPage} /><Route path="/diploma" component={DiplomaPage} /><Route path="/about" component={AboutPage} /><Route path="/contact" component={ContactPage} /><Route component={NotFound} /></Switch></ErrorBoundary>;
+  const [location] = useLocation();
+  if (location.startsWith('/portal')) return <PortalApp />;
+  return <ErrorBoundary resetKey={location}><Switch><Route path="/" component={HomePage} /><Route path="/programmes" component={ProgrammesPage} /><Route path="/admissions" component={AdmissionsPage} /><Route path="/fees" component={FeesPage} /><Route path="/diploma" component={DiplomaPage} /><Route path="/about" component={AboutPage} /><Route path="/contact" component={ContactPage} /><Route component={NotFound} /></Switch></ErrorBoundary>;
 }
 
 function App() {
